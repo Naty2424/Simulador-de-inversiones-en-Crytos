@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simu-Cryptos - {% block head_title %}Balance App{% endblock head_title %}</title>
+    <link rel="stylesheet" href="/static/css/flat-remix.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+
+    {% include 'componentes/header.html' %}
+    {% include 'componentes/navbar.html' %}
+
+
+    <main class="main">
+
+        {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+        <div class="alert alert-info">
+            <ul>
+                {% for mensaje in mensajes %}
+                <li>{{ mensaje }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+
+            {% block page_title %}
+            <h1>App de movimientos</h1>
+            {% endblock page_title %}
+
+            {% block contenido%}
+            {% endblock contenido %}
+
+    </main>
+    {% include 'components/footer.html' %}
+
+
+</body>
+
+</html>
