@@ -8,12 +8,27 @@ from .models import ListaMovimientosCsv, ListaMovimientosDB, Movimiento
 
 
 @app.route('/')
-# @app.route('/purchase', methods=['GET', 'POST'])
-# def compra():
+  def home ():
+   """"
+   muestras los movimientos realizados
+   """
+
+ @app.route('/purchase', methods=['GET', 'POST'])
+   def compra():
+   """
+   permite al compra de cryptos
+   """
 # pass
-# def venta():
+  def venta():
+  """
+  permite la venta de las cryptos
+  """
 # pass
-# def intercambio():
+  def intercambio():
+     """
+     Permite intercsmbiar cryptos
+     """
+     
 # pass
  @app.route('/status')
  def home():
