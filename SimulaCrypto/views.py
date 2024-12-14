@@ -1,42 +1,74 @@
 from datetime import date
 
 from flask import flash, render_template,  redirect, request, url_for
-from . import ALMACEN, app
-
-from .forms import MovimientoForm
-from .models import ListaMovimientosCsv, ListaMovimientosDB, Movimiento
+from . import app
+# ALMACEN
+# from .forms import MovimientoForm
+from .models import ListaMovimientos, Movimiento
 
 
 @app.route('/')
-  def home ():
-   """"
-   muestras los movimientos realizados
-   """
+def home():
+    """
+    muestras los movimientos realizados
+    """
+    lista = ListaMovimientos()
+    lista.leer_dsd_archivo()
+    return render_template("inicio.html", movs=lista)
 
- @app.route('/purchase', methods=['GET', 'POST'])
-   def compra():
-   """
-   permite al compra de cryptos
-   """
-# pass
-  def venta():
-  """
-  permite la venta de las cryptos
-  """
-# pass
-  def intercambio():
-     """
-     Permite intercsmbiar cryptos
-     """
-     
-# pass
- @app.route('/status')
- def home():
-     if ALMACEN == 0:
-         lista = ListaMovimientosCsv()
-     else:
-         lista = ListaMovimientosDB()
-    return render_template('inicio.html', movs=lista.movimientos)
+
+@app.route('/purchase', methods=['GET', 'POST'])
+def compra():
+    """
+    permite la compra de cryptos
+    """
+    if request.method == "GET":
+        return render_template("compra.html")
+    if request.method == "POST":
+        """
+        se agrega el movimiento a la lista, se guarda y se devuelve Ok 
+        si todo correcto, o el error
+        """
+        movs = Movimiento(request.forma)
+        ListaMovimientos.agregar_movs(movs)
+        return request.forma
+
+
+pass
+
+
+def venta():
+    """
+    permite la venta de las cryptos
+    """
+    if request.method == "GET":
+        return render_template("compra.html")
+    if request.method == "POST":
+        """
+        se agrega el movimiento a la lista, se guarda y se devuelve Ok 
+        si todo correcto, o el error
+        """
+        movs = Movimiento(request.forma)
+        ListaMovimientos.agregar_movs(movs)
+        return request.forma
+
+
+def intercambio():
+    """
+    Permite intercsmbiar cryptos
+    """
+
+
+pass
+
+
+# @app.route('/status')
+# def home():
+#    if ALMACEN == 0:
+#       lista = ListaMovimientosCsv()
+#    else:
+#        lista = ListaMovimientosDB()
+#    return render_template('inicio.html', movs=lista.movimientos)
 # @app.route('/eliminar/<int:id>')
 # def delete(id):
 #    lista = ListaMovimientosDB()
