@@ -13,7 +13,7 @@ def home():
     muestras los movimientos realizados
     """
     lista = ListaMovimientos()
-    lista.leer_dsd_archivo()
+    lista.leer_desde_archivo()
     return render_template("inicio.html", movs=lista)
 
 
@@ -29,9 +29,9 @@ def compra():
         se agrega el movimiento a la lista, se guarda y se devuelve Ok 
         si todo correcto, o el error
         """
-        movs = Movimiento(request.forma)
+        movs = Movimiento(request.form)
         ListaMovimientos.agregar_movs(movs)
-        return request.forma
+        return request.form
 
 
 pass
