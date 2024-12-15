@@ -152,11 +152,11 @@ class Movimiento:
 
         # Validación de la moneda
         if moneda in monedas:
-            self.moneda =
+            self.moneda = []
         else:
             raise ValueError(f'La moneda {moneda} no es valida')
 
-         # Validación de la cantida
+         # Validación de la cantidad
         try:
             valor = float(cantidad)
             if valor > 0:
@@ -172,6 +172,33 @@ class Movimiento:
 
         self.moneda = moneda
         self.cantidad = cantidad
+
+    def calcular_cantidad_to():
+
+    def calcular_precio_unitario():
+
+        precio_unitario = cantidad_from / cantidad_to
+
+    def Consulta_coinap(moneda_from, moneda_to, cantidad_from, cantidad_to):
+        api_key = 'tu_api_key_aquí'  # Reemplaza con tu API key
+        url = f'https://rest.coinapi.io/v1/exchangerate/{
+            cantidad_from}/{cantidad_to}?apikey={api_key}'
+        response = requests.get(url)
+        data = response.json()
+        rate = data['rate']
+        total_to = rate * amount
+
+    def agregar_movs():
+        movement = {
+            'fecha': datetime.now().date(),
+            'hora': datetime.now().time(),
+            'moneda_from': moneda_from,
+            'moneda_to': moneda_to,
+            'cantidad_from': cantidad_from,
+            'cantidad_to': cantidad_to,
+        }
+        movs.append(movement)
+        return redirect(url_for('exito'))
 
     @property
     def has_errors(self):

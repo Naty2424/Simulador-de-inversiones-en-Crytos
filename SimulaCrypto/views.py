@@ -1,9 +1,8 @@
 from datetime import date
-
-from flask import flash, render_template,  redirect, request, url_for
+from flask import Flask, flash, render_template,  redirect, request, url_for
 from . import app
 # ALMACEN
-# from .forms import MovimientoForm
+from .forms import MovimientoForm
 from .models import ListaMovimientos, Movimiento
 
 
@@ -17,21 +16,51 @@ def home():
     return render_template("inicio.html", movs=lista)
 
 
+def exito():
+    lista = ListaMovimientos()
+    moneda_to = moneda_to.MovimientoFrom()
+    return render_template('compra.html', monedas=moneda_to, movs=lista)
+
+
 @app.route('/purchase', methods=['GET', 'POST'])
 def compra():
     """
     permite la compra de cryptos
     """
     if request.method == "GET":
-        return render_template("compra.html")
+        return render_template("compra.html", movs)
+
     if request.method == "POST":
         """
         se agrega el movimiento a la lista, se guarda y se devuelve Ok 
-        si todo correcto, o el error
+        si todo correcto, si no devolvemos el error
         """
         movs = Movimiento(request.form)
-        ListaMovimientos.agregar_movs(movs)
-        return request.form
+        boton = request.form['boton']
+
+        moneda_from = request.form['moneda_from']
+        moneda_to = request.form['moneda_to']
+        cantidad_from = float(request.form['cantidad_from'])
+
+        if moneda_from != moneda_to and boton == 'calculadora':
+
+            consulta = Consulta_coinap()
+            cantidad_to = consulta.calcular_cantidad_to()
+            precio_unitario = consulta.calcular_precio_unitario()
+
+            return render_template('compra.html', form=movs, cantidad_to=cantidad_to, precio_unitario=precio_unitario)
+
+        elif boton == 'OK':  # Si se presionó el botón de aceptar, validamos el formulario
+            # Implementar la función para validar los datos
+            if forms.validate(request.form):
+                # Insertar en Lista Movimientos
+                ListaMovimientos.agregar_movs(movs)
+                # Redirige a una página inicial
+                return redirect(url_for('exito'))
+            else:
+                return render_template('compra.html', error="Datos inválidos")
+
+    return render_template('compra.html')
 
 
 pass

@@ -6,7 +6,8 @@ from wtforms import (
     HiddenField,
     RadioField,
     StringField,
-    SubmitField
+    SubmitField,
+    SelectField
 )
 from wtforms.validators import DataRequired, NumberRange
 
@@ -43,12 +44,12 @@ class MovimientoForm(FlaskForm):
         ('DOT', 'Polkadot'),
         ('DOGDE', 'Dogecoin')], validators=[DataRequired('Debe ingresar una moneda'), validate_moneda])
 
-    Q = DateField('Fecha', validators=[
-        DataRequired('Debes indicar la fecha del movimiento')
+    Q = DecimalField('Q', validators=[
+        DataRequired('Debes indicar una cantidad correcta')
     ])
 
-    P.U = RadioField(choices=[('I', 'Ingreso'), ('G', 'Gasto')], validators=[
-        DataRequired('Necesito saber si es un gasto o un ingreso')
+    PU = DecimalField('P.U', validators=[
+        DataRequired('Debes indicar una cantidad correcta')
     ])
 
     submit = SubmitField('Guardar')
