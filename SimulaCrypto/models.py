@@ -1,7 +1,14 @@
 from datetime import date, datetime
 
-import csv
+import requests
 import sqlite3
+
+HEADERS = {'X-CoinAPI-Key': 'TU_API_KEY'}
+
+RUTA_API = f'https://rest.coinapi.io/v1/exchangerate/{
+    cantidad_from}/{cantidad_to}?apikey={api_key}'
+
+RUTA_API_CRYPTO = f'https://rest.coinapi.io/v1/exchangerate/{crypto}/EUR'
 
 RUTA_DB = 'SimulaCrypto/data/movimientos.db'
 
@@ -134,7 +141,7 @@ class Movimiento:
         self.errores = []
 
         # Validación de la hora
-
+        # self.datetime =
         try:
             self.hora = datetime.fromisoformat(hora)
         except ValueError:
@@ -179,17 +186,8 @@ class Movimiento:
 
         precio_unitario = cantidad_from / cantidad_to
 
-    def Consulta_coinap(moneda_from, moneda_to, cantidad_from, cantidad_to):
-        api_key = 'tu_api_key_aquí'  # Reemplaza con tu API key
-        url = f'https://rest.coinapi.io/v1/exchangerate/{
-            cantidad_from}/{cantidad_to}?apikey={api_key}'
-        response = requests.get(url)
-        data = response.json()
-        rate = data['rate']
-        total_to = rate * amount
-
     def agregar_movs():
-        movement = {
+        movimientos = {
             'fecha': datetime.now().date(),
             'hora': datetime.now().time(),
             'moneda_from': moneda_from,
@@ -197,8 +195,45 @@ class Movimiento:
             'cantidad_from': cantidad_from,
             'cantidad_to': cantidad_to,
         }
-        movs.append(movement)
+        Movimiento.append(movimientos)
         return redirect(url_for('exito'))
+
+    def calcular_saldo_invertido(movimientos):
+        saldo_invertido = 0
+        total_invertido = 0
+
+        for movimiento in movimientos:
+        if movimiento['moneda_from'] == 'EUR':
+            total_invertido += movimiento['cantidad_from']
+        # Restamos lo que se ha convertido a crypto
+            saldo_invertido -= movimiento['cantidad_to']
+        if movimiento['moneda_to'] == 'EUR':
+            # Sumamos lo que se ha recuperado
+            saldo_invertido += movimiento['cantidad_to']
+        return saldo_invertido, total_invertido
+
+    def calcular_total_eur_invertido(movimientos):
+        total_eur_invertidos = sum(
+            movimiento['cantidad_from']
+            for movimiento in movimientos
+            if movimiento['moneda_from'] == 'EUR')
+
+    def calcular_valor_actual_eur(movimientos):
+        valor_actual_cryptos = 0
+        cryptos = set(movimiento['moneda_to']
+                      for movimiento in movimientos
+                      if movimiento['cantidad_to'] > 0)
+
+        for crypto in cryptos:
+        total_to = sum(movimiento['cantidad_to']
+                       for movimiento in movimientos
+                       if movimiento['moneda_to'] == crypto)
+
+        total_from = sum(movimiento['cantidad_from']
+                         for movimiento in movimientos
+                         if movimiento['moneda_from'] == crypto)
+
+    def calcular_resultado_final():
 
     @property
     def has_errors(self):
@@ -284,3 +319,27 @@ class ListaMovimientosDB(ListaMovimientos):
     def editarMovimiento(self, movimiento):
         db = DBManager(RUTA_DB)
         return db.actualizarMovimiento(movimiento)
+
+
+class Coinapi:
+
+    def __init__(self, RUTA_API):
+        self.ruta = RUTA_API
+
+    def consulta_coinap(moneda_from, moneda_to, cantidad_from, cantidad_to):
+        """
+        consulta en Coinapi, se obtiene time y rate.
+        """
+        api_key = 'tu_api_key_aquí'  # Reemplaza con tu API key
+        url = RUTA_API
+        response = requests.get(url, headers=HEADERS)
+        data = response.json()
+        self.datatime = data
+        rate = data.get['rate', 0]
+        total_to = rate * amount
+
+    def obtener_tipo_cambio(crypto):
+        url = RUTA_API_CRYPTO
+        response = requests.get(url, headers=HEADERS)
+        data = response.json()
+        return data['rate'] if 'rate' in data else 0

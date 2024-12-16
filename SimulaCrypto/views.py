@@ -91,7 +91,10 @@ def intercambio():
 pass
 
 
-# @app.route('/status')
+@app.route('/status')
+def
+
+
 # def home():
 #    if ALMACEN == 0:
 #       lista = ListaMovimientosCsv()
