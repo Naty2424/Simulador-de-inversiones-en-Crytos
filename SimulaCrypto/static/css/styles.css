@@ -43,23 +43,72 @@ header {
     padding: 20px;
 }
 
-.tabla {
-    width: 100%;
-    margin: 0;
+.subtitulo {
+    text-align: center;
+    margin-bottom: 0px;
+    font-size: larger;
+    font-weight: bold;
+    color: black;
 }
 
-.tabla .numero,
-.tabla .acciones {
+.tabla {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 6px;
+}
+
+.principal {
+    border: solid 0px;
+}
+
+.fila {
+    border: solid 2px black;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cuadro {
+    flex: 1;
+    text-align: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 6px;
+}
+
+.item {
+    border: solid 3px black;
+    margin: 10px;
+}
+
+.cuadro.actions {
+    background-color: #f0f0f0;
+    padding: 5px;
+
+}
+
+
+
+
+
+
+
+
+...................................... .tabla .primero {}
+
+.tabla .segundo {
     text-align: right;
 }
 
-.tabla .lista-vacia {
+.tabla .tercero {
     text-align: center;
     padding: 25px;
     color: var(--neutral-60);
 }
 
-.tabla .error {
+.tabla .cuarta {
     color: var(--error-color);
     font-size: small;
     margin: 0 0 10px 0;
@@ -83,3 +132,13 @@ header {
     color: white;
     background-color: var(--primary-color);
 }
+
+.boton .boton-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 6px;
+}
+
+.boton .boton-plus {}
