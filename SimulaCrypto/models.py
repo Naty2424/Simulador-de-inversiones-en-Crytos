@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, jsonify
 
 import requests
 import sqlite3
@@ -334,7 +334,6 @@ class Coinapi:
         response = requests.get(url, headers=HEADERS)
 
         try:
-            response = requests.get(url, headers=HEADERS)
             if response.status_code == 200:
                 return response.json().get('rate', 0)
             else:

@@ -23,7 +23,7 @@
 
     poner las filas de Q,TO PU con los condicionales de --
     {% if movs %}
-    {% for m in movs %}
+    {% for movimiento in movimientos %}
     <tr class="fila">
         <td class="dato">
             {% if m.fecha %}
@@ -32,45 +32,7 @@
             ---
             {% endif %}
         </td>
-        <td class="dato">{{ m.concepto }}</td>
-        <td class="dato">
-            {% if m.tipo == 'I' %}
-            Ingreso
-            {% else %}
-            Gasto
-            {% endif %}
-        </td>
-        <td class="dato numero">{{ m.cantidad }}</td>
-        <td class="acciones">
-            <a href="/calcular/{{ m.id }}" class="mini-boton">
-                <img src="/static/icons/calculator.png" alt="calcular"></img>
-            </a>
-
-            <a href="/editar/{{ m.id }}" class="mini-boton">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </a>
-            <a href="/eliminar/{{ m.id }}" class="mini-boton">
-                <i class="fa-solid fa-trash"></i>
-            </a>
-        </td>
-    </tr>
-    {% if m.has_errors %}
-    <tr>
-        <td></td>
-        <td colspan="3">
-            <p class="error">
-                {% for error in m.errores %}
-                {{ error }}<br>
-                {% endfor %}
-            </p>
-        </td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-    {% else %}
-    <tr class="fila">
-        <td class="lista-vacia" colspan="4">No hay movimientos</td>
-    </tr>
-    {% endif %}
+        {% endif %}
+        {% endfor %}
 </table>
 {% endblock contenido %}

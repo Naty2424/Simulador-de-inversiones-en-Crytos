@@ -3,7 +3,7 @@ from flask import Flask, jsonify, flash, render_template,  redirect, request, ur
 from . import app
 
 from .forms import MovimientoForm
-from .models import ListaMovimientos, Movimiento
+from .models import Coinapi, ListaMovimientos, Movimiento
 
 
 @app.route('/')
@@ -36,6 +36,9 @@ def compra():
         si todo correcto, si no devolvemos el error
         """
         movimiento = Movimiento(request.form)
+        calcular = Movimiento()
+        coinapi = Coinapi()
+        p_u =
         boton = request.form['boton']
 
         moneda_from = request.form['moneda_from']
@@ -43,9 +46,9 @@ def compra():
         cantidad_from = float(request.form['cantidad_from'])
 
         if moneda_from != moneda_to and boton == 'calculadora':
-
-            consulta = consulta_coinap()
-            cantidad_to = consulta.calcular_cantidad_to()
+            consulta = coinapi.consulta_coinap(
+                moneda_to, cantidad_from, cantidad_to)
+            cantidad_to = calcular.calcular_cantidad_to()
             precio_unitario = consulta.calcular_precio_unitario()
 
             return render_template('compra.html', form=movimiento, cantidad_to=cantidad_to, precio_unitario=precio_unitario)
@@ -77,9 +80,9 @@ def venta():
         se agrega el movimiento a la lista, se guarda y se devuelve Ok
         si todo correcto, o el error
         """
-        movimiento = Movimiento(request.forma)
+        movimiento = Movimiento(request.form)
         ListaMovimientos.agregar_movs(movimiento)
-        return request.forma
+        return request.form
 
 
 def intercambio():
@@ -114,9 +117,9 @@ def calcular_inversion():
                         movimiento[movimientos['moneda_from'] == crypto]['cantidad_from'].sum())
 
     # Convertir crypto a eur con CoinApi
-    if total_crypto > 0
-    tasa_cambio = get_crypto_to_eur(crypto)
-    valor_actual_crypto += total_crypto * tasa_cambio
+    if total_crypto > 0:
+        tasa_cambio = get_crypto_to_eur(crypto)
+        valor_actual_crypto += total_crypto * tasa_cambio
 
     # Cálculo final
     valor_act = total_eur_invertido + saldo_eur_invertido + valor_act_crypto
@@ -132,3 +135,4 @@ def calcular_inversion():
 
 @ app.route('/status')
 def cambio_crytpo_to_eur(crypto):
+    pass
