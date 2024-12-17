@@ -219,19 +219,18 @@ class Movimiento:
             if movimiento['moneda_from'] == 'EUR')
 
     def calcular_valor_actual_eur(movimientos):
-        valor_actual_cryptos = 0
-        cryptos = set(movimiento['moneda_to']
-                      for movimiento in movimientos
-                      if movimiento['cantidad_to'] > 0)
+        totales = {}
+        for movimiento in movimientos:
+        moneda_to = movimiento['moneda_to']
+        moneda_from = movimiento['moneda_from']
 
-        for crypto in cryptos:
-        total_to = sum(movimiento['cantidad_to']
-                       for movimiento in movimientos
-                       if movimiento['moneda_to'] == crypto)
-
-        total_from = sum(movimiento['cantidad_from']
-                         for movimiento in movimientos
-                         if movimiento['moneda_from'] == crypto)
+        if moneda_to:
+            totales[moneda_to] = totales.get(
+                moneda_to, 0) + movimiento['cantidad_to']
+        if moneda_from:
+            totales[moneda_from] = totales.get(
+                moneda_from, 0) - movimiento['cantidad_from']
+     # llamada a conaip a consulta conaip
 
     def calcular_resultado_final():
 
@@ -333,10 +332,17 @@ class Coinapi:
         api_key = 'tu_api_key_aquí'  # Reemplaza con tu API key
         url = RUTA_API
         response = requests.get(url, headers=HEADERS)
-        data = response.json()
-        self.datatime = data
-        rate = data.get['rate', 0]
-        total_to = rate * amount
+
+        try:
+            response = requests.get(url, headers=HEADERS)
+            if response.status_code == 200:
+                return response.json().get('rate', 0)
+            else:
+                print(f'Error {response.status_code} : {response.text}')
+                return 0
+        except Exception as e:
+            print(f'Error dato de la fecha para {crypto}: {e}')
+            return 0
 
     def obtener_tipo_cambio(crypto):
         url = RUTA_API_CRYPTO
