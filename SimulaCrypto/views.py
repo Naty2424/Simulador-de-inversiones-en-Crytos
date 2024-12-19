@@ -12,7 +12,7 @@ def home():
     muestras los movimientos realizados
     """
     lista = ListaMovimientos()
-    lista.leer_desde_archivo()
+   # lista.leer_desde_archivo()
     return render_template("inicio.html", movs=lista)
 
 
@@ -35,10 +35,10 @@ def compra():
         se agrega el movimiento a la lista, se guarda y se devuelve Ok
         si todo correcto, si no devolvemos el error
         """
-        movimiento = Movimiento(request.form)
+        movimiento = MovimientoForm(request.form)
         calcular = Movimiento()
         coinapi = Coinapi()
-        p_u =
+       # p_u =
         boton = request.form['boton']
 
         moneda_from = request.form['moneda_from']
@@ -57,7 +57,7 @@ def compra():
             # Implementar la función para validar los datos
             if forms.validate(request.form):
                 # Insertar en Lista Movimientos
-                ListaMovimientos.agregar_movs(movimiento)
+                Movimiento.agregar_movs(movimiento)
                 # Redirige a una página inicial
                 return redirect(url_for('exito'))
             else:

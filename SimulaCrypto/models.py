@@ -1,5 +1,6 @@
 from datetime import date, datetime, jsonify
 
+from flask import redirect
 import requests
 import sqlite3
 
@@ -139,6 +140,9 @@ class Movimiento:
 
     def __init__(self, dict_mov):
         self.errores = []
+        hora = dict_mov.get('time', '')
+        cantidad_to = dict_mov.get('cantidad_to')
+        cantidad_from = dict_mov.get('cantidad_from')
 
         # Validación de la hora
         # self.datetime =

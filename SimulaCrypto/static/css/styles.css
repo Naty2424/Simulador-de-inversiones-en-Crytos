@@ -84,16 +84,36 @@ header {
 }
 
 .cuadro.actions {
+    display: flex;
+    justify-content: right;
     background-color: #f0f0f0;
-    padding: 5px;
-
 }
 
+.btn {
+    background-color: #f25d18;
+    border: 0px;
+    padding: 15px;
+}
 
+.btn-1 {
+    background-color: #f25d18;
+    border: 0px;
+    padding: 15px;
+    margin-right: 155px;
+}
 
+.btn-2 {
+    background-color: #f25d18;
+    border: 0px;
+    padding: 15px;
+    margin-left: 155px;
+}
 
-
-
+.btn-3 {
+    background-color: #f25d18;
+    border: 0px;
+    padding: 15px;
+}
 
 
 ...................................... .tabla .primero {}

@@ -1,13 +1,27 @@
 {% extends "base.html" %}
 
+{% block head_title %}
+{{ super() }}: Estado
+{% endblock head_title %}
 
-<table class="paper tabla">
+{% block page_title %}
+<h1>Estado De Inversión</h1>
+{% endblock page_title %}
 
-    <tr class="fila">
-        <th class="cabecera fecha">From</th>
-        <th class="cabecera">Q:</th>
-        <th class="cabecera">To</th>
-        <th class="cabecera">Q:</th>
-        <th class="cabecera">P.U:</th>
-    </tr>
-</table>
+{% block contenido %}
+
+<body>
+    <div class='principal'>
+        <div class='fila'>
+            <div class='cuadro'>Invertido:</div>
+        </div>
+        <div class='fila'>
+            <div class='cuadro'>Valor Actual:</div>
+        </div>
+        <div class='fila'>
+            <div class='cuadro actions'>
+                <button class="btn-3">OK</button>
+            </div>
+        </div>
+    </div>
+</body>

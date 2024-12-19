@@ -9,30 +9,73 @@
 {% endblock page_title %}
 
 {% block contenido %}
-<table class="paper tabla">
 
-    <tr class="fila">
-        <th class="cabecera fecha">Fecha</th>
-        <th class="cabecera">Hora</th>
-        <th class="cabecera">From</th>
-        <th class="cabecera">Q</th>
-        <th class="cabecera">To</th>
-        <th class="cabecera">Q</th>
-        <th class="cabecera">P.U</th>
-    </tr>
+<body>
 
-    poner las filas de Q,TO PU con los condicionales de --
-    {% if movs %}
-    {% for movimiento in movimientos %}
-    <tr class="fila">
-        <td class="dato">
-            {% if m.fecha %}
-            {{ m.fecha }}
-            {% else %}
-            ---
-            {% endif %}
-        </td>
-        {% endif %}
-        {% endfor %}
-</table>
+
+    <div class='principal'>
+        <div class='fila'>
+            <div class='cuadro'>Movimientos:</div>
+        </div>
+        <div class='fila'>
+            <table class="paper tabla">
+                <tr class="fila">
+                    <th class="cabecera fecha">Fecha</th>
+                    <th class="cabecera">Hora</th>
+                    <th class="cabecera">From</th>
+                    <th class="cabecera">Q</th>
+                    <th class="cabecera">To</th>
+                    <th class="cabecera">Q</th>
+                    <th class="cabecera">PU</th>
+                </tr>
+
+                {% if movimientos %}
+                {% for movimiento in movimientos %}
+                <tr class="fila">
+                    <td class="dato">
+                        {% if m.Fecha %}
+                        {{ m.Fecha }}
+                        {% else %}
+                        ---
+                        {% endif %}
+                        {% if m.Hora %}
+                        {{ m.Hora }}
+                        {% else %}
+                        ---
+                        {% endif %}
+                        {% if m.From %}
+                        {{ m.From }}
+                        {% else %}
+                        ---
+                        {% endif %}
+                        {% if m.Q %}
+                        {{ m.Q }}
+                        {% else %}
+                        ---
+                        {% endif %}
+                        {% if m.To %}
+                        {{ m.To }}
+                        {% else %}
+                        ---
+                        {% endif %}
+                        {% if m.PU %}
+                        {{ m.PU }}
+                        {% else %}
+                        ---
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+            </table>
+        </div>
+        <div class='fila'>
+            <button class="btn-1">Status</button>
+            <button class="btn-2">+</button>
+        </div>
+    </div>
+    </div>
+</body>
+
+
 {% endblock contenido %}
