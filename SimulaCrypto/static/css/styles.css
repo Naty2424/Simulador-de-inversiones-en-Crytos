@@ -37,6 +37,11 @@ header {
     color: var(--neutral-100);
 }
 
+.footer {
+    padding: 20px;
+    border-top: var(--standard-border);
+}
+
 .main {
     max-width: 700px;
     margin: auto;
@@ -51,7 +56,28 @@ header {
     color: black;
 }
 
+table {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    text-align: left;
+}
+
 .tabla {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 6px;
+}
+
+.paper_tabla {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -114,51 +140,3 @@ header {
     border: 0px;
     padding: 15px;
 }
-
-
-...................................... .tabla .primero {}
-
-.tabla .segundo {
-    text-align: right;
-}
-
-.tabla .tercero {
-    text-align: center;
-    padding: 25px;
-    color: var(--neutral-60);
-}
-
-.tabla .cuarta {
-    color: var(--error-color);
-    font-size: small;
-    margin: 0 0 10px 0;
-    line-height: 1rem;
-}
-
-.footer {
-    padding: 20px;
-    border-top: var(--standard-border);
-}
-
-.acciones .mini-boton {
-    /* border: solid thin var(--primary-color); */
-    padding: 0 5px;
-    /* background-color: lightgray; */
-    color: var(--primary-color);
-}
-
-.acciones a.mini-boton:hover {
-    text-decoration: none;
-    color: white;
-    background-color: var(--primary-color);
-}
-
-.boton .boton-status {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f0f0f0;
-    padding: 6px;
-}
-
-.boton .boton-plus {}
