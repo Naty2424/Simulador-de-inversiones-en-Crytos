@@ -1,15 +1,15 @@
-from datetime import date, datetime, jsonify
+from datetime import date, datetime
 
-from flask import redirect
-import requests
+from flask import redirect, json, request
 import sqlite3
 
 HEADERS = {'X-CoinAPI-Key': 'TU_API_KEY'}
 
-RUTA_API = f'https://rest.coinapi.io/v1/exchangerate/{
-    cantidad_from}/{cantidad_to}?apikey={api_key}'
+# RUTA_API = f'https://rest.coinapi.io/v1/exchangerate/{
+#    cantidad_from}/{cantidad_to}?apikey={api_key}'
 
-RUTA_API_CRYPTO = f'https://rest.coinapi.io/v1/exchangerate/{crypto}/EUR'
+# type: ignore
+# RUTA_API_CRYPTO = f'https: // rest.coinapi.io/v1/exchangerate/{'crypto'}/EUR'
 
 RUTA_DB = 'SimulaCrypto/data/movimientos.db'
 
@@ -43,11 +43,6 @@ class DBManager:
         for columna in cursor.description:
             nombres_columna.append(columna[0])
 
-        # [ "id", "fecha", "concepto", "tipo", "cantidad"  ]
-        # (
-        # (   1 , '2024-11-01', 'Calabaza', 'G', '3.56'  )
-        # )
-
         # 4.2. Guardar los datos localmente
         for dato in datos:
             movimiento = {}
@@ -68,8 +63,8 @@ class DBManager:
         sql = 'DELETE FROM movimientos WHERE id=?'
         conexion = sqlite3.connect(self.ruta)
         cursor = conexion.cursor()
-
         resultado = False
+
         try:
             cursor.execute(sql, (id,))
             conexion.commit()
@@ -84,7 +79,7 @@ class DBManager:
         return resultado
 
     def obtenerMovimiento(self, id):
-        sql = 'SELECT id, fecha, concepto, tipo, cantidad FROM movimientos WHERE id=?'
+        sql = 'SELECT date, time, moneda_from , moneda_to FROM movimientos WHERE id=?'
 
         conexion = sqlite3.connect(self.ruta)
         cursor = conexion.cursor()
@@ -103,7 +98,7 @@ class DBManager:
             for nombre in nombres_columna:
                 movimiento[nombre] = datos[indice]
                 indice += 1
-            movimiento['fecha'] = date.fromisoformat(movimiento['fecha'])
+            movimiento['date'] = date.fromisoformat(movimiento['date'])
             resultado = movimiento
 
         conexion.close()
@@ -112,16 +107,16 @@ class DBManager:
     def actualizarMovimiento(self, movimiento):
         conexion = sqlite3.connect(self.ruta)
         cursor = conexion.cursor()
-        sql = 'UPDATE movimientos SET fecha=?, concepto=?, tipo=?, cantidad=? WHERE id=?'
+        sql = 'UPDATE movimientos SET date=?, time=?, moneda_from=?, moneda_to=? WHERE id=?'
 
         resultado = -1
 
         try:
             params = (
-                movimiento.fecha,
-                movimiento.concepto,
-                movimiento.tipo,
-                movimiento.cantidad,
+                movimiento.date,
+                movimiento.time,
+                movimiento.moneda_from,
+                movimiento.moneda_to,
                 movimiento.id
             )
             cursor.execute(sql, params)
@@ -141,6 +136,8 @@ class Movimiento:
     def __init__(self, dict_mov):
         self.errores = []
         hora = dict_mov.get('time', '')
+        monedas = dict_mov.get('moneda_from')
+        moneda = dict_mov.get('moneda_to')
         cantidad_to = dict_mov.get('cantidad_to')
         cantidad_from = dict_mov.get('cantidad_from')
 
@@ -169,24 +166,25 @@ class Movimiento:
 
          # Validación de la cantidad
         try:
-            valor = float(cantidad)
+                valor = float(cantidad_from)
             if valor > 0:
                 self.cantidad = valor
             else:
                 self.cantidad = 0
                 mensaje = f'El importe de la cantidad debe ser un número mayor que cero'
                 self.errores.append(mensaje)
-        except ValueError:
-            self.cantidad = 0
+        except ValueError: self.cantidad_from = 0
             mensaje = f'El valor no es convertible a número'
             self.errores.append(mensaje)
+            self.moneda = moneda
+            self.cantidad = cantidad_to
 
-        self.moneda = moneda
-        self.cantidad = cantidad
+    # def calcular_cantidad_to():
 
-    def calcular_cantidad_to():
+    def calcular_precio_unitario(self, dict_mov):
 
-    def calcular_precio_unitario():
+        cantidad_to = dict_mov.get('cantidad_to')
+        cantidad_from = dict_mov.get('cantidad_from')
 
         precio_unitario = cantidad_from / cantidad_to
 
@@ -207,14 +205,15 @@ class Movimiento:
         total_invertido = 0
 
         for movimiento in movimientos:
-        if movimiento['moneda_from'] == 'EUR':
-            total_invertido += movimiento['cantidad_from']
-        # Restamos lo que se ha convertido a crypto
-            saldo_invertido -= movimiento['cantidad_to']
-        if movimiento['moneda_to'] == 'EUR':
-            # Sumamos lo que se ha recuperado
-            saldo_invertido += movimiento['cantidad_to']
-        return saldo_invertido, total_invertido
+            if movimiento['moneda_from'] == 'EUR':
+                total_invertido += movimiento['cantidad_from']
+            # Restamos lo que se ha convertido a crypto
+                saldo_invertido -= movimiento['cantidad_to']
+
+            if movimiento['moneda_to'] == 'EUR':
+                # Sumamos lo que se ha recuperado
+                saldo_invertido += movimiento['cantidad_to']
+            return saldo_invertido, total_invertido
 
     def calcular_total_eur_invertido(movimientos):
         total_eur_invertidos = sum(
@@ -225,8 +224,8 @@ class Movimiento:
     def calcular_valor_actual_eur(movimientos):
         totales = {}
         for movimiento in movimientos:
-        moneda_to = movimiento['moneda_to']
-        moneda_from = movimiento['moneda_from']
+            moneda_to = movimiento['moneda_to']
+            moneda_from = movimiento['moneda_from']
 
         if moneda_to:
             totales[moneda_to] = totales.get(
@@ -238,12 +237,12 @@ class Movimiento:
 
     def calcular_resultado_final():
 
-    @property
-    def has_errors(self):
-        return len(self.errores) > 0
+        @property
+        def has_errors(self):
+            return len(self.errores) > 0
 
-    def __str__(self):
-        return f'{self.fecha} | {self.concepto} | {self.tipo} | {self.cantidad}'
+        def __str__(self, dict_mov):
+            return f'{self.date} | {self.time} | {self.moneda_from} | {self.moneda_to}'
 
     def __repr__(self):
         return self.__str__()
