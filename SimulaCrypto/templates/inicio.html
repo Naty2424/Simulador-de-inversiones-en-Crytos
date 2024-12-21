@@ -67,6 +67,24 @@
                     {% endif %}
                     {% endfor %}
                 </tr>
+                {% if movimiento.has_errors %}
+                <tr>
+                    <td></td>
+                    <td colspan="3">
+                        <p class="error">
+                            {% for error in movimiento.errores %}
+                            {{ error }}<br>
+                            {% endfor %}
+                        </p>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <tr class="fila">
+                    <td class="lista-vacia" colspan="4">No hay movimientos</td>
+                </tr>
+                {% endif %}
             </table>
         </div>
         <div class='fila'>

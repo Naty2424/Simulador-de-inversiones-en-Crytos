@@ -1,76 +1,40 @@
 {% extends "base.html" %}
 
 {% block head_title %}
-{{ super() }}: Inicio / Compra / Status
+{{ super() }}: Compra
 {% endblock head_title %}
 
 {% block page_title %}
-<h1>Compra de Cryptos</h1>
+
+<h1> Compra de Cryptos </h1>
+
 {% endblock page_title %}
 
 {% block contenido %}
-<table class="paper tabla">
 
-    <tr class="fila">
-        <th class="cabecera fecha">From</th>
-        <th class="cabecera">Q:</th>
-        <th class="cabecera">To</th>
-        <th class="cabecera">Q:</th>
-        <th class="cabecera">P.U:</th>
-    </tr>
+<body>
+    <div class='principal'>
+        <div class='fila'>
+            <div class='cuadro'>From:</div>
+            <div class='item1'></div>
+            <div class='cuadro'>To:</div>
+            <div class='item2'></div>
+        </div>
+        <div class='fila'>
+            <div class='cuadro'>Q:</div>
+            <div class='item3'>
+                <img src="/static/css/icons/calculator.png">
+            </div>
+            <div class='cuadro'>Q:</div>
+        </div>
+        <div class='fila'>
+            <div class='cuadro'>P.U:</div>
+        </div>
+        <div class='fila'>
+            <div class='cuadro actions'>
+                <button class="btn">OK</button>
 
-    <!-- Contenedor de botones  -->
-    <div class="botones">
-        <button class="btn estado">Status</button>
-        <button class="btn agregar">+</button>
-
+            </div>
+        </div>
     </div>
-
-    {% if movs %}
-    {% for m in movs %}
-    <tr class="fila">
-        <td class="dato">
-            {% if m.Form %}
-            {{ m.From }}
-            {% else %}
-            ---
-            {% endif %}
-        </td>
-        <td class="dato">{{ m.Q }}</td>
-        <td class="dato">
-            {% if m.Q == 'I' %}
-            Ingreso
-            {% else %}
-            Gasto
-            {% endif %}
-        </td>
-        <td class="dato numero">{{ m.cantidad }}</td>
-        <td class="acciones">
-            <a href="/editar/{{ m.id }}" class="mini-boton">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </a>
-            <a href="/eliminar/{{ m.id }}" class="mini-boton">
-                <i class="fa-solid fa-trash"></i>
-            </a>
-        </td>
-    </tr>
-    {% if m.has_errors %}
-    <tr>
-        <td></td>
-        <td colspan="3">
-            <p class="error">
-                {% for error in m.errores %}
-                {{ error }}<br>
-                {% endfor %}
-            </p>
-        </td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-    {% else %}
-    <tr class="fila">
-        <td class="lista-vacia" colspan="4">No hay movimientos</td>
-    </tr>
-    {% endif %}
-</table>
-{% endblock contenido %}
+</body>
